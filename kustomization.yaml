@@ -1,16 +1,22 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - manifests/manifests-ping/deployment.yaml
-  - manifests/manifests-log/deployment.yaml
-  - manifests/manifests-log/service.yaml
-  - manifests/manifests-log/configmap.yaml
-  - manifests/manifests-ping/service.yaml
-  - manifests/manifests-ping/ingress.yaml
-  - manifests/manifests-ping/secret.yaml
-  - manifests/manifests-ping/statefulsets.yaml
-  - manifests/manifests-ping/postgresservice.yaml
+- manifests/manifests-ping/deployment.yaml
+- manifests/manifests-log/deployment.yaml
+- manifests/manifests-log/service.yaml
+- manifests/manifests-log/configmap.yaml
+- manifests/manifests-ping/service.yaml
+- manifests/manifests-ping/ingress.yaml
+- manifests/manifests-ping/secret.yaml
+- manifests/manifests-ping/statefulsets.yaml
+- manifests/manifests-ping/postgresservice.yaml
 images:
-  - name: PROJECT/IMAGE1
-  - name: PROJECT/IMAGE2
-  - name: PROJECT/IMAGE3
+- name: PROJECT/IMAGE1
+  newName: irmindev/log-output
+  newTag: d3554713c43e11789dd00841873f95e0992dc1ca
+- name: PROJECT/IMAGE2
+  newName: irmindev/log-writer
+  newTag: d3554713c43e11789dd00841873f95e0992dc1ca
+- name: PROJECT/IMAGE3
+  newName: irmindev/ping-pong
+  newTag: d3554713c43e11789dd00841873f95e0992dc1ca
