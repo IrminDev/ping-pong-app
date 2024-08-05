@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: log-config
+data:
+  MESSAGE: "Hello, World!"
+  information.txt: |
+    This is a file that contains information.
+    It is stored in a ConfigMap.
+    It can be accessed by the log-output container.

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-output
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      containers:
+        - name: log-output
+          image: PROJECT/IMAGE1
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "3000"
+            - name: PING_PONG_URL
+              value: "http://ping-pong-svc.default.svc.cluster.local:80"
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-config
+                  key: MESSAGE
+          volumeMounts:
+            - name: information
+              mountPath: /etc/config
+            - name: data
+              mountPath: /files/
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+                path: /
+                port: 3000
+          readinessProbe:
+              httpGet:
+                  path: /
+                  port: 3000
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              failureThreshold: 3
+        - name: log-writer
+          image: PROJECT/IMAGE2
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "3002"
+          volumeMounts:
+            - name: data
+              mountPath: /files/
+          ports:
+            - containerPort: 3002
+      volumes:
+        - name: information
+          configMap:
+            name: log-config
+        - name: data
+          emptyDir: {}

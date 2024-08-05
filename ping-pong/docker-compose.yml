@@ -1,0 +1,26 @@
+services:
+  ping-pong:
+    image: irmindev/exercise-1-9:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - DB_HOST=db
+      - DB_USER=irmindev
+      - DB_PASSWORD=PostgresPassword
+      - DB_DATABASE=pingpong
+    container_name: ping-pong
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15.7-bullseye
+    environment:
+      POSTGRES_USER: irmindev
+      POSTGRES_PASSWORD: PostgresPassword
+      POSTGRES_DB: pingpong
+    ports:
+      - "5432:5432"
